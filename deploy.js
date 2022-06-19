@@ -8,7 +8,7 @@ const main = async () => {
 	const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");
 
 	// privateKey de wallet local de Ganache.
-	const ganacheWalletPrivateKey = "d9dcfd0584003c8851ee821183de87a96643d209aa15653f65a54157615093c8";
+	const ganacheWalletPrivateKey = "5602bbc0403c001b84e792d62419d44badc67ad6b36ef960a78d7567fb809bfc";
 
 	// Instanciando un wallet de ethers. Pasamos la private key
 	const wallet = new ethers.Wallet(ganacheWalletPrivateKey, provider);
@@ -26,9 +26,25 @@ const main = async () => {
 		// Si todo sale correctamente, veremos que el contrato ha sido enviado correctamente a la red y
 		// contractFactory nos devuelve una instancia del contrato desplegado en la red.
 		const contract = await contractFactory.deploy();
+
+		// Podemos configurar que se de por válido el deploy tomando en cuenta la cantidad de bloques que se han validado
+
+		// Con esta línea de código estamos indicando que espere que mínimo se confirme la transacción en un bloque antes de darla por válida.
+		const deploymentReceipt = await contract.deployTransaction.wait(1);
+
+		// La transacción es la información acerca del contrato o la transacción que se ha realizado.
+		console.log("======================");
+		console.log("Deployment Transaction");
+		console.log("======================");
 		console.log(contract);
+
+		// El recibo es la confirmación que hemos declarado para que se válide esta transacción
+		console.log("==================");
+		console.log("Deployment Receipt");
+		console.log("==================");
+		console.log(deploymentReceipt);
 	} catch (error) {
-		console.log(error);
+		throw new Error(error);
 	}
 };
 
