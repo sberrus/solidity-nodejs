@@ -3,20 +3,27 @@ const fs = require("fs");
 require("dotenv").config();
 
 const main = async () => {
-	// http://127.0.0.1:8545 -> Ganache local server
-
 	// Obtenemos el provider mediante ethers para poder interactuar con el nodo de pruebas.
-	const provider = new ethers.providers.JsonRpcProvider(process.env.RPCProvider);
+	const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL);
 
 	// privateKey de wallet local de Ganache.
-	const ganacheSenderPrivateKey = process.env.SenderPrivateKey;
+	const ganacheSenderPrivateKey = process.env.SENDER_PRIVATE_KEY;
 	/*								 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 									 CADA VEZ QUE SE REINICIE EL SERVIDOR DE GANACHE, HAY QUE MODIFICAR LA
 									 PRIVATE KEY DEL SENDER.
 	*/
 
-	// Instanciando un wallet de ethers. Pasamos la private key
+	// Instanciando un wallet de ethers.
 	const wallet = new ethers.Wallet(ganacheSenderPrivateKey, provider);
+
+	// FORMA MAS SEGURDA DE CONECTAR LA WALLET CON SU PRIVATE KEY 0:07:45:00
+	// const encryptedJson = fs.readFileSync("./.encryptedKey.json", "utf-8");
+	// let wallet = new ethers.Wallet.fromEncryptedJsonSync(encryptedJson, process.env.PRIVATE_KEY_PASSWORD);
+	// wallet = await wallet.connect(provider);
+	// ** para que funcione tenemos que pasar la variable de entorno antes de ejecutar el "[VARIABLE=VALOR] node deploy.js"
+	// ** Lo segundo que hay que tener en cuenta es que en la terminal hay un comando "history" que muestra todo lo que hemos introducido
+	// en esta, por lo que debemos realizar un borrado de la misma con el comando "history -c" después para que nadie pueda ver el salt
+	// que hemos declarado en nuestro script de encryptado.
 
 	// Obtenemos el abi y el binary del contrato ya compilado que queremos enviar a la red.
 	const abi = fs.readFileSync("./SimpleStorage_sol_SimpleStorage.abi", "utf-8");
