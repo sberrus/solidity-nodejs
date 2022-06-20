@@ -43,6 +43,8 @@ const main = async () => {
 		// Podemos configurar que se de por válido el deploy tomando en cuenta la cantidad de bloques que se han validado.
 		// Con esta línea de código estamos indicando que espere que mínimo se confirme la transacción en un bloque antes de darla por válida.
 		await contract.deployTransaction.wait(1);
+		console.log(`Contract Address: ${contract.address}`);
+		console.log(contract);
 
 		// Ya estando el contrato en la red, la instancia "contract" contiene los métodos y variables que tiene el contrato
 		// Por lo que podemos utilizar sus métodos ya que el ABI le dice que cosas deben comportarse de cierta manera.
@@ -87,6 +89,7 @@ const main = async () => {
 			console.log(
 				"Error al realizar deploy.\n\n Si esta intentando realizar el deploy en una red de pruebas compruebe la private key del sender y que el servidor este en marcha \n\n"
 			);
+		console.log(error);
 	}
 };
 
