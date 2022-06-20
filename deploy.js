@@ -1,14 +1,15 @@
 const ethers = require("ethers");
 const fs = require("fs");
+require("dotenv").config();
 
 const main = async () => {
 	// http://127.0.0.1:8545 -> Ganache local server
 
 	// Obtenemos el provider mediante ethers para poder interactuar con el nodo de pruebas.
-	const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");
+	const provider = new ethers.providers.JsonRpcProvider(process.env.RPCProvider);
 
 	// privateKey de wallet local de Ganache.
-	const ganacheSenderPrivateKey = "0678ba9fffbc54e4fe9cc4cb683b0f1e33e5a39f7209cec7edf845543a0012a1";
+	const ganacheSenderPrivateKey = process.env.SenderPrivateKey;
 	/*								 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 									 CADA VEZ QUE SE REINICIE EL SERVIDOR DE GANACHE, HAY QUE MODIFICAR LA
 									 PRIVATE KEY DEL SENDER.
@@ -77,7 +78,7 @@ const main = async () => {
 	} catch (error) {
 		error.code === "SERVER_ERROR" &&
 			console.log(
-				"Error al realizar deploy.\n\n Si esta intentando realizar el deploy en una red de pruebas compruebe la private key del sender \n\n"
+				"Error al realizar deploy.\n\n Si esta intentando realizar el deploy en una red de pruebas compruebe la private key del sender y que el servidor este en marcha \n\n"
 			);
 	}
 };
