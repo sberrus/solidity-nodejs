@@ -80,6 +80,7 @@ const main = async () => {
 		 * 												  Como se puede observar aquí, se envia en formato string por el mismo problema
 		 * 												  de los bignumbers que hemos mencionado anteriormente.
 		 */
+		//
 		const transactionReceipt = await transactionResponse.wait(1); // Esperamos que la transacción se confirme en almenos 1 bloque antes de validarla.
 		console.log("Contrato actualizado con exito ✅");
 		const updatedFavoriteNumber = await contract.retrieves();
